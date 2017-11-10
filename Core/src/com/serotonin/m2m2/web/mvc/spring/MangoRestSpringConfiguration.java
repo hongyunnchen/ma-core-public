@@ -43,6 +43,7 @@ import com.serotonin.m2m2.web.mvc.rest.v1.converters.CsvMessageConverter;
 import com.serotonin.m2m2.web.mvc.rest.v1.converters.CsvQueryArrayStreamMessageConverter;
 import com.serotonin.m2m2.web.mvc.rest.v1.converters.CsvRowMessageConverter;
 import com.serotonin.m2m2.web.mvc.rest.v1.converters.HtmlHttpMessageConverter;
+import com.serotonin.m2m2.web.mvc.rest.v1.converters.JacksonCsvConverter;
 import com.serotonin.m2m2.web.mvc.rest.v1.converters.SerotoninJsonMessageConverter;
 import com.serotonin.m2m2.web.mvc.rest.v1.mapping.JScienceModule;
 import com.serotonin.m2m2.web.mvc.rest.v1.mapping.MangoCoreModule;
@@ -168,10 +169,11 @@ public class MangoRestSpringConfiguration extends WebMvcConfigurerAdapter {
 	public void configureMessageConverters(
 			List<HttpMessageConverter<?>> converters) {
 		
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-		converter.setObjectMapper(getObjectMapper());
         converters.add(new ResourceHttpMessageConverter());
-		converters.add(converter);
+		converters.add(new MappingJackson2HttpMessageConverter(getObjectMapper()));
+		
+		converters.add(new JacksonCsvConverter());
+		
 		converters.add(new CsvMessageConverter());
 		converters.add(new CsvRowMessageConverter());
 		converters.add(new CsvQueryArrayStreamMessageConverter());
